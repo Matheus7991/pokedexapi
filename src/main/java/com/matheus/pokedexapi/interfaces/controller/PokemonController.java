@@ -1,15 +1,16 @@
 package com.matheus.pokedexapi.interfaces.controller;
 
+import com.matheus.pokedexapi.application.dto.CreatePokemonRequest;
+import com.matheus.pokedexapi.application.dto.PokemonResponse;
+import com.matheus.pokedexapi.application.mapper.PokemonResponseMapper;
+import com.matheus.pokedexapi.application.usecase.CreatePokemonUseCase;
 import com.matheus.pokedexapi.application.usecase.FindPokemonUseCase;
-import com.matheus.pokedexapi.domain.entity.Pokemon;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/pokemon")
@@ -17,14 +18,28 @@ import java.util.List;
 public class PokemonController {
 
     private final FindPokemonUseCase findPokemonUseCase;
+    private final CreatePokemonUseCase createPokemonUseCase;
 
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Pokemon> findByName(
+    public ResponseEntity<PokemonResponse> findByName(
             @PathVariable String name
     ){
 
-        return ResponseEntity.ok(findPokemonUseCase.execute(name));
+        var pokemon = findPokemonUseCase.execute(name);
+
+        return ResponseEntity.ok(PokemonResponseMapper.toResponse(pokemon));
+    }
+
+    @PostMapping
+    public ResponseEntity<PokemonResponse> create(
+            @RequestBody @Valid CreatePokemonRequest request
+            ){
+        var pokemon = createPokemonUseCase.execute(request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(PokemonResponseMapper.toResponse(pokemon));
     }
 
 }
