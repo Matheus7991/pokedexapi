@@ -38,6 +38,11 @@ public class PokemonRepositoryImpl implements PokemonRepository {
     }
 
     @Override
+    public boolean existsByName(String name) {
+        return pokemonJpaRepository.existsByName(name);
+    }
+
+    @Override
     public void delete(UUID id) {
 
         pokemonJpaRepository.deleteById(id);

@@ -1,5 +1,6 @@
 package com.matheus.pokedexapi.interfaces.exception;
 
+import com.matheus.pokedexapi.domain.exception.PokemonAlreadyExistsException;
 import com.matheus.pokedexapi.domain.exception.PokemonNotFoundException;
 import com.matheus.pokedexapi.interfaces.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -11,14 +12,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(PokemonNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePokemonNotFound(
-            PokemonNotFoundException exception
-    ){
+    public ResponseEntity<ErrorResponse> handlePokemonNotFound(PokemonNotFoundException exception){
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(
                         new ErrorResponse(
                                 404,
+                                exception.getMessage()
+                        )
+                );
+    }
+
+    @ExceptionHandler(PokemonAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handlePokemonAlreadyExists(PokemonAlreadyExistsException exception){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(
+                        new ErrorResponse(
+                                HttpStatus.CONFLICT.value(),
                                 exception.getMessage()
                         )
                 );

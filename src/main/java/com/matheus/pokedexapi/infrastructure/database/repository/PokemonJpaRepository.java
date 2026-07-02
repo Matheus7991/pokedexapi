@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface PokemonJpaRepository extends JpaRepository<PokemonEntity, UUID> {
 
     Optional<PokemonEntity> findByName(String name);
+
+    boolean existsByName(String name);
 }

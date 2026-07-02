@@ -13,6 +13,8 @@ public interface PokemonRepository {
 
     Optional<Pokemon> findByName(String name);
 
+    boolean existsByName(String name);
+
     void delete(UUID id);
 
 }
