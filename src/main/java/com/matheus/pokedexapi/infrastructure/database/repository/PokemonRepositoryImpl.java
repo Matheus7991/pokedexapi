@@ -6,6 +6,7 @@ import com.matheus.pokedexapi.infrastructure.database.mapper.PokemonMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +36,14 @@ public class PokemonRepositoryImpl implements PokemonRepository {
 
         return pokemonJpaRepository.findByName(name)
                 .map(PokemonMapper::toDomain);
+    }
+
+    @Override
+    public List<Pokemon> findAll() {
+        return pokemonJpaRepository.findAll()
+                .stream()
+                .map(PokemonMapper::toDomain)
+                .toList();
     }
 
     @Override

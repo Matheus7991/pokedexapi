@@ -4,6 +4,8 @@ import com.matheus.pokedexapi.application.dto.PokemonResponse;
 import com.matheus.pokedexapi.domain.entity.Pokemon;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 public class PokemonResponseMapper {
 
@@ -17,6 +19,12 @@ public class PokemonResponseMapper {
                 pokemon.getDescription(),
                 pokemon.getImageUrl()
         );
+    }
+
+    public static List<PokemonResponse> toResponseList(List<Pokemon> pokemons){
+        return pokemons.stream()
+                .map(PokemonResponseMapper::toResponse)
+                .toList();
     }
 
 

@@ -4,12 +4,15 @@ import com.matheus.pokedexapi.application.dto.CreatePokemonRequest;
 import com.matheus.pokedexapi.application.dto.PokemonResponse;
 import com.matheus.pokedexapi.application.mapper.PokemonResponseMapper;
 import com.matheus.pokedexapi.application.usecase.CreatePokemonUseCase;
+import com.matheus.pokedexapi.application.usecase.FindAllPokemonUseCase;
 import com.matheus.pokedexapi.application.usecase.FindPokemonUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -19,6 +22,7 @@ public class PokemonController {
 
     private final FindPokemonUseCase findPokemonUseCase;
     private final CreatePokemonUseCase createPokemonUseCase;
+    private final FindAllPokemonUseCase findAllPokemonUseCase;
 
 
     @GetMapping("/name/{name}")
@@ -29,6 +33,14 @@ public class PokemonController {
         var pokemon = findPokemonUseCase.execute(name);
 
         return ResponseEntity.ok(PokemonResponseMapper.toResponse(pokemon));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<PokemonResponse>> findAll(){
+
+        var pokemons = findAllPokemonUseCase.execute();
+
+        return ResponseEntity.ok(PokemonResponseMapper.toResponseList(pokemons));
     }
 
     @PostMapping
