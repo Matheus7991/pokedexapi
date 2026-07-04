@@ -5,6 +5,7 @@ import com.matheus.pokedexapi.application.dto.PokemonResponse;
 import com.matheus.pokedexapi.application.mapper.PokemonResponseMapper;
 import com.matheus.pokedexapi.application.usecase.CreatePokemonUseCase;
 import com.matheus.pokedexapi.application.usecase.FindAllPokemonUseCase;
+import com.matheus.pokedexapi.application.usecase.FindPokemonByIdUseCase;
 import com.matheus.pokedexapi.application.usecase.FindPokemonUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -25,7 +27,14 @@ public class PokemonController {
     private final FindPokemonUseCase findPokemonUseCase;
     private final CreatePokemonUseCase createPokemonUseCase;
     private final FindAllPokemonUseCase findAllPokemonUseCase;
+    private final FindPokemonByIdUseCase findPokemonByIdUseCase;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PokemonResponse> findById(@PathVariable UUID id){
+        var pokemon = findPokemonByIdUseCase.execute(id);
+
+        return ResponseEntity.ok(PokemonResponseMapper.toResponse(pokemon));
+    }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<PokemonResponse> findByName(
