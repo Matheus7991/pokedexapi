@@ -1,6 +1,8 @@
 package com.matheus.pokedexapi.domain.repository;
 
 import com.matheus.pokedexapi.domain.entity.Pokemon;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +16,7 @@ public interface PokemonRepository {
 
     Optional<Pokemon> findByName(String name);
 
-    List<Pokemon> findAll();
+    Page<Pokemon> findAll(Pageable pageable);
 
     boolean existsByName(String name);
 

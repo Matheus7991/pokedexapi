@@ -8,6 +8,8 @@ import com.matheus.pokedexapi.application.usecase.FindAllPokemonUseCase;
 import com.matheus.pokedexapi.application.usecase.FindPokemonUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,11 +38,10 @@ public class PokemonController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PokemonResponse>> findAll(){
+    public ResponseEntity<Page<PokemonResponse>> findAll(Pageable pageable){
 
-        var pokemons = findAllPokemonUseCase.execute();
+        return ResponseEntity.ok(findAllPokemonUseCase.execute(pageable).map(PokemonResponseMapper::toResponse));
 
-        return ResponseEntity.ok(PokemonResponseMapper.toResponseList(pokemons));
     }
 
     @PostMapping

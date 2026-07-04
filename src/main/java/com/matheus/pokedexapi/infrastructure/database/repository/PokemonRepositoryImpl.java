@@ -4,6 +4,8 @@ import com.matheus.pokedexapi.domain.entity.Pokemon;
 import com.matheus.pokedexapi.domain.repository.PokemonRepository;
 import com.matheus.pokedexapi.infrastructure.database.mapper.PokemonMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,11 +41,10 @@ public class PokemonRepositoryImpl implements PokemonRepository {
     }
 
     @Override
-    public List<Pokemon> findAll() {
-        return pokemonJpaRepository.findAll()
-                .stream()
-                .map(PokemonMapper::toDomain)
-                .toList();
+    public Page<Pokemon> findAll(Pageable pageable) {
+        return pokemonJpaRepository
+                .findAll(pageable)
+                .map(PokemonMapper::toDomain);
     }
 
     @Override
