@@ -35,4 +35,20 @@ public class Pokemon {
         this.description = description;
         this.imageUrl = imageUrl;
     }
+
+    public void update(
+            String name,
+            String type,
+            Integer height,
+            Integer weight,
+            String description,
+            String imageUrl
+    ){
+        this.name = name;
+        this.type = type;
+        this.height = height;
+        this.weight = weight;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
 }

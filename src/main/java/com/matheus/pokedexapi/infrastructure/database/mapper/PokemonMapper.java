@@ -20,6 +20,7 @@ public class PokemonMapper {
     public static PokemonEntity toEntity(Pokemon pokemon){
 
         return PokemonEntity.builder()
+                .id(pokemon.getId())
                 .name(pokemon.getName())
                 .type(pokemon.getType())
                 .height(pokemon.getHeight())

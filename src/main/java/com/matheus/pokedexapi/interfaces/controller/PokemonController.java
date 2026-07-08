@@ -2,11 +2,9 @@ package com.matheus.pokedexapi.interfaces.controller;
 
 import com.matheus.pokedexapi.application.dto.CreatePokemonRequest;
 import com.matheus.pokedexapi.application.dto.PokemonResponse;
+import com.matheus.pokedexapi.application.dto.UpdatePokemonRequest;
 import com.matheus.pokedexapi.application.mapper.PokemonResponseMapper;
-import com.matheus.pokedexapi.application.usecase.CreatePokemonUseCase;
-import com.matheus.pokedexapi.application.usecase.FindAllPokemonUseCase;
-import com.matheus.pokedexapi.application.usecase.FindPokemonByIdUseCase;
-import com.matheus.pokedexapi.application.usecase.FindPokemonUseCase;
+import com.matheus.pokedexapi.application.usecase.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,6 +26,7 @@ public class PokemonController {
     private final CreatePokemonUseCase createPokemonUseCase;
     private final FindAllPokemonUseCase findAllPokemonUseCase;
     private final FindPokemonByIdUseCase findPokemonByIdUseCase;
+    private final UpdatePokemonUseCase updatePokemonUseCase;
 
     @GetMapping("/{id}")
     public ResponseEntity<PokemonResponse> findById(@PathVariable UUID id){
@@ -51,6 +50,14 @@ public class PokemonController {
 
         return ResponseEntity.ok(findAllPokemonUseCase.execute(pageable).map(PokemonResponseMapper::toResponse));
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PokemonResponse> update(@PathVariable UUID id, @Valid @RequestBody UpdatePokemonRequest request){
+
+        var pokemon = updatePokemonUseCase.execute(id, request);
+
+        return ResponseEntity.ok(PokemonResponseMapper.toResponse(pokemon));
     }
 
     @PostMapping
