@@ -1,10 +1,12 @@
 package com.matheus.pokedexapi.domain.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
+@Builder
 public class Pokemon {
 
     private UUID id;
