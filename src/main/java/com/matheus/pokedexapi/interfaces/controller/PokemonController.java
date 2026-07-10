@@ -27,6 +27,7 @@ public class PokemonController {
     private final FindAllPokemonUseCase findAllPokemonUseCase;
     private final FindPokemonByIdUseCase findPokemonByIdUseCase;
     private final UpdatePokemonUseCase updatePokemonUseCase;
+    private final DeletePokemonUseCase deletePokemonUseCase;
 
     @GetMapping("/{id}")
     public ResponseEntity<PokemonResponse> findById(@PathVariable UUID id){
@@ -36,9 +37,7 @@ public class PokemonController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<PokemonResponse> findByName(
-            @PathVariable String name
-    ){
+    public ResponseEntity<PokemonResponse> findByName(@PathVariable String name){
 
         var pokemon = findPokemonUseCase.execute(name);
 
@@ -61,14 +60,20 @@ public class PokemonController {
     }
 
     @PostMapping
-    public ResponseEntity<PokemonResponse> create(
-            @RequestBody @Valid CreatePokemonRequest request
-            ){
+    public ResponseEntity<PokemonResponse> create(@RequestBody @Valid CreatePokemonRequest request){
         var pokemon = createPokemonUseCase.execute(request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(PokemonResponseMapper.toResponse(pokemon));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
+
+        deletePokemonUseCase.execute(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
