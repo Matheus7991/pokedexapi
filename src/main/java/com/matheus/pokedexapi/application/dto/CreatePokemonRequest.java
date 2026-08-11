@@ -13,12 +13,16 @@ public record CreatePokemonRequest(
         @NotBlank(message = "Type is required")
         String type,
 
+        @Schema(description = "Altura do Pokémon", example = "40")
         Integer height,
 
+        @Schema(description = "Peso do Pokémon", example = "60")
         Integer weight,
 
+        @Schema(description = "Descrição do Pokémon", example = "Mouse Pokémon")
         String description,
 
+        @Schema(description = "URL da imagem do Pokémon", example = "https://example.com/pikachu.png")
         String imageUrl
 ) {
 }

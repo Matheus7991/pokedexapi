@@ -54,7 +54,9 @@ public class PokemonController {
             @ApiResponse(responseCode = "404",description = "Pokémon não encontrado")
     })
     @GetMapping("/name/{name}")
-    public ResponseEntity<PokemonResponse> findByName(@PathVariable String name){
+    public ResponseEntity<PokemonResponse> findByName(
+            @Parameter(description = "Nome do Pokémon", example = "Pikachu")
+            @PathVariable String name){
 
         var pokemon = findPokemonUseCase.execute(name);
 
@@ -65,7 +67,7 @@ public class PokemonController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
     })
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<Page<PokemonResponse>> findAll(@ParameterObject Pageable pageable){
 
         return ResponseEntity.ok(findAllPokemonUseCase.execute(pageable).map(PokemonResponseMapper::toResponse));
@@ -79,7 +81,11 @@ public class PokemonController {
             @ApiResponse(responseCode = "409", description = "Já existe um Pokémon com esse nome")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<PokemonResponse> update(@PathVariable UUID id, @Valid @RequestBody UpdatePokemonRequest request){
+    public ResponseEntity<PokemonResponse> update(
+            @Parameter(description = "UUID do Pokémon", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable UUID id,
+            @Valid
+            @RequestBody UpdatePokemonRequest request){
 
         var pokemon = updatePokemonUseCase.execute(id, request);
 
@@ -103,11 +109,13 @@ public class PokemonController {
 
     @Operation(summary = "Deletar Pokémon por ID", description = "Deleta um Pokémon a partir do seu UUID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Pokémon deletado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Pokémon deletado com sucesso"),
             @ApiResponse(responseCode = "404",description = "Pokémon não encontrado")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(
+            @Parameter(description = "UUID do Pokémon", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable UUID id){
 
         deletePokemonUseCase.execute(id);
 
